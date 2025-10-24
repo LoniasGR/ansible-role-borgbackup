@@ -28,9 +28,9 @@
         owner: "{{ borg_user }}"
         group: "{{ borg_group }}"
 
-    - name: Add Borgmatic configuration for versions prior to 1.8.0
+    - name: Add legacy Borgmatic configuration for versions prior to 1.8.0
       ansible.builtin.template:
-        src: config_1.7.yaml.j2
+        src: config_legacy.yaml.j2
         dest: "/etc/borgmatic/{{ borgmatic_config_name }}"
         mode: "0600"
         owner: "{{ borg_user }}"
