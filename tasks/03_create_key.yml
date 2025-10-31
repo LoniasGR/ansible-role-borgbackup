@@ -29,4 +29,3 @@
       ansible.builtin.debug:
         msg: "The generated key is: {{ backup_local_ssh_key['content'] | b64decode }}"
       when: borg_ssh_key_file_path is defined and borg_ssh_key_file_path | length > 0
-...

@@ -45,4 +45,3 @@
         owner: "{{ borg_user }}"
         group: "{{ borg_group }}"
       when: borgmatic_version is version('1.8.0', '>=')
-...
