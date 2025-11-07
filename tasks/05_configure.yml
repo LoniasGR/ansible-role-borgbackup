@@ -37,11 +37,20 @@
         group: "{{ borg_group }}"
       when: borgmatic_version is version('1.8.0', '<')
 
-    - name: Add Borgmatic configuration for versions 1.8.0 and newer
+    - name: Add Borgmatic configuration for versions between 1.8.0 and 2.0.0
       ansible.builtin.template:
-        src: config.yaml.j2
+        src: config_18.yaml.j2
         dest: "/etc/borgmatic/{{ borgmatic_config_name }}"
         mode: "0600"
         owner: "{{ borg_user }}"
         group: "{{ borg_group }}"
-      when: borgmatic_version is version('1.8.0', '>=')
+      when: borgmatic_version is version('1.8.0', '>=') and borgmatic_version is version('2.0.0', '<')
+
+    - name: Add Borgmatic configuration for versions 1.8.0 and newer
+      ansible.builtin.template:
+        src: config_20.yaml.j2
+        dest: "/etc/borgmatic/{{ borgmatic_config_name }}"
+        mode: "0600"
+        owner: "{{ borg_user }}"
+        group: "{{ borg_group }}"
+      when: borgmatic_version is version('2.0.0', '>=')
