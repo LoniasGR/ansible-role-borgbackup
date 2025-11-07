@@ -209,13 +209,14 @@ check_last: {{ borgmatic_check_last }}
 # particular points during borgmatic's execution. For each command
 # hook, specify one of "before" or "after", not both.
 {% if borgmatic_commands is defined %}
-{{ borgmatic_commands | to_nice_yaml(indent=4) | indent(4, first=true) }}
+commands:
+{{ borgmatic_commands | to_nice_yaml(indent=2) | indent(2, first=true) }}
 {% endif %}
 
 {% if borgmatic_databases is defined %}
-{{ borgmatic_databases | to_nice_yaml(indent=4) | indent(4, first=true) }}
+{{ borgmatic_databases | to_nice_yaml(indent=2) }}
 {% endif %}
 
 {% if borgmatic_monitors is defined %}
-{{ borgmatic_monitors | to_nice_yaml(indent=4) | indent(4, first=true) }}
+{{ borgmatic_monitors | to_nice_yaml(indent=2) }}
 {% endif%}
