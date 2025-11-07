@@ -12,21 +12,21 @@
 # or the "source_directories_must_exist" option.
 {% if borg_source_directories is not defined or borg_source_directories | length == 0 %}
 source_directories:
-    - /etc/hostname # prevent empty backupconfig
+  - /etc/hostname # prevent empty backupconfig
 {% else %}
 source_directories:
-    {% for dir in borg_source_directories %}
-    - {{ dir }}
-    {% endfor %}
+  {% for dir in borg_source_directories %}
+  - {{ dir }}
+  {% endfor %}
 {% endif %}
 
 repositories:
 {% if borg_repository is iterable and (borg_repository is not string and borg_repository is not mapping) %}
-  {% for repo in borg_repository %}
-    - path: {{ repo }}
-  {% endfor %}
+{% for repo in borg_repository %}
+  - path: {{ repo }}
+{% endfor %}
 {% elif borg_repository is defined and borg_repository is string %}
-    - path: {{ borg_repository }}
+  - path: {{ borg_repository }}
 {% endif %}
 
 # Stay in same file system; do not cross mount points beyond the given
@@ -50,7 +50,7 @@ remote_path: {{ borg_remote_path }}
 # are expanded. See the output of "borg help patterns" for more details.
 exclude_patterns:
 {% for dir in borg_exclude_patterns %}
-    - '{{ dir }}'
+  - '{{ dir }}'
 {% endfor %}
 {% endif %}
 {% if borg_exclude_from %}
@@ -58,7 +58,7 @@ exclude_patterns:
 # line. See the output of "borg help patterns" for more details.
 exclude_from:
 {% for dir in borg_exclude_from %}
-    - {{ dir }}
+  - {{ dir }}
 {% endfor %}
 {% endif %}
 
@@ -68,7 +68,7 @@ exclude_caches: true
 
 # Exclude directories that contain a file with the given filename.
 exclude_if_present:
-    - .nobackup
+  - .nobackup
 
 # Passphrase to unlock the encryption key with. Only use on
 # repositories that were initialized with passphrase/repokey/keyfile
@@ -190,20 +190,11 @@ keep_yearly: {{ borg_retention_policy.keep_yearly }}
 # "frequency" is omitted).
 checks:
 {% for checks in borgmatic_checks %}
-    - {{ checks }}
+  - {{ checks }}
 {% endfor %}
 
 # Restrict the number of checked archives to the last n. Applies only to the "archives" check.
 check_last: {{ borgmatic_check_last }}
-
-# Shell commands or scripts to execute before and after a backup or if an error has occurred.
-# IMPORTANT: All provided commands and scripts are executed with user permissions of borgmatic.
-# Do not forget to set secure permissions on this file as well as on any script listed (chmod 0700) to
-# prevent potential shell injection or privilege escalation.
-{% for hook in borgmatic_hooks %}
-{{ hook }}:
-{{ borgmatic_hooks[hook] | to_nice_yaml(indent=4) | indent(4, first=true) }}
-{% endfor %}
 
 # List of one or more command hooks to execute, triggered at
 # particular points during borgmatic's execution. For each command
@@ -213,10 +204,11 @@ commands:
 {{ borgmatic_commands | to_nice_yaml(indent=2) | indent(2, first=true) }}
 {% endif %}
 
-{% if borgmatic_databases is defined %}
-{{ borgmatic_databases | to_nice_yaml(indent=2) }}
-{% endif %}
-
-{% if borgmatic_monitors is defined %}
-{{ borgmatic_monitors | to_nice_yaml(indent=2) }}
-{% endif%}
+# Shell commands or scripts to execute before and after a backup or if an error has occurred.
+# IMPORTANT: All provided commands and scripts are executed with user permissions of borgmatic.
+# Do not forget to set secure permissions on this file as well as on any script listed (chmod 0700) to
+# prevent potential shell injection or privilege escalation.
+{% for hook in borgmatic_hooks %}
+{{ hook }}:
+{{ borgmatic_hooks[hook] | to_nice_yaml(indent=2) | indent(2, first=true) }}
+{% endfor %}
