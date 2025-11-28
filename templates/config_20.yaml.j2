@@ -10,10 +10,7 @@
 # rather than errors. If you'd like to change that behavior, see
 # https://torsion.org/borgmatic/how-to/customize-warnings-and-errors/
 # or the "source_directories_must_exist" option.
-{% if borg_source_directories is not defined or borg_source_directories | length == 0 %}
-source_directories:
-  - /etc/hostname # prevent empty backupconfig
-{% else %}
+{% if borg_source_directories is defined and borg_source_directories | length > 0 %}
 source_directories:
   {% for dir in borg_source_directories %}
   - {{ dir }}
